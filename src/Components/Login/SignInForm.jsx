@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Signinform() {
@@ -12,7 +13,7 @@ function Signinform() {
   const [isPasswordVisible, setisPasswordVisible] = useState(true);
   const [isConfiremedPasswordVisible, setisConfiremedPasswordVisible] =
     useState(true);
-
+  const navigate = useNavigate();
   // Handle form input changes
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -68,6 +69,9 @@ function Signinform() {
             setAlertMsg(response.data.alertMsg);
             setIsCreated(true);
             setTimeout(() => {
+              if (message === "Login data saved successfully") {
+                navigate("/home");
+              }
               setIsCreated(false);
             }, 1500);
           })
@@ -111,13 +115,20 @@ function Signinform() {
       <div className="signinform">
         <h1>SignUp Form</h1>
         <label htmlFor="name">Enter Name:</label>
-        <input type="text" id="name" value={name} onChange={handleNameChange} />
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={handleNameChange}
+          autoComplete="off"
+        />
         <label htmlFor="email">Enter Email:</label>
         <input
           type="email"
           id="email"
           value={email}
           onChange={handleEmailChange}
+          autoComplete="off"
         />
         <label htmlFor="password">Enter Password</label>
         <div>
@@ -126,6 +137,7 @@ function Signinform() {
             id="password"
             value={password}
             onChange={handlePasswordChange}
+            autoComplete="off"
           />
 
           {isPasswordVisible ? (
@@ -144,6 +156,7 @@ function Signinform() {
             id="confirmpassword"
             value={confirmedpassword}
             onChange={handleConfirmPasswordChange}
+            autoComplete="off"
           />
           {isConfiremedPasswordVisible ? (
             <i
@@ -158,6 +171,13 @@ function Signinform() {
           )}
         </div>
         <button onClick={handleSubmit}>Submit</button>
+        <p>
+          Already have account?{" "}
+          <Link className="link" to="/login">
+            {" "}
+            Login{" "}
+          </Link>
+        </p>
       </div>
     </>
   );

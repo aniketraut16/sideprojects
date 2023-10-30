@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Loginform() {
@@ -8,6 +9,7 @@ function Loginform() {
   const [isCreated, setIsCreated] = useState(false);
   const [message, setMessage] = useState("");
   const [isPasswordVisible, setisPasswordVisible] = useState(true);
+  const navigate = useNavigate();
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -38,6 +40,9 @@ function Loginform() {
           setAlertMsg(response.data.alertMsg);
           setIsCreated(true);
           setTimeout(() => {
+            if (message === "You have logged in!!") {
+              navigate("/home");
+            }
             setIsCreated(false);
           }, 1500);
         })
@@ -78,6 +83,7 @@ function Loginform() {
             id="email"
             value={email}
             onChange={handleEmailChange}
+            autoComplete="off"
           />
           <label htmlFor="password">Enter Password</label>
           <div>
@@ -86,6 +92,7 @@ function Loginform() {
               id="password"
               value={password}
               onChange={handlePasswordChange}
+              autoComplete="off"
             />
 
             {isPasswordVisible ? (
@@ -98,6 +105,12 @@ function Loginform() {
             )}
           </div>
           <button onClick={handleSubmit}>Login</button>
+          <p>
+            Don't have Account?{" "}
+            <Link className="link" to="/">
+              Sign in
+            </Link>
+          </p>
         </div>
       </>
     </>
